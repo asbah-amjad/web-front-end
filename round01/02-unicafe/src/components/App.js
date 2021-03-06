@@ -38,6 +38,9 @@ export const App = () => {
   const goodClickHandler = () => setGood(good + 1)
   const neutralClickHandler = () => setNeutral(neutral + 1)
   const badClickHandler = () => setBad(bad + 1)
+  const total = good + neutral + bad
+  const positive = good / total
+  const average = (good - bad) / total
 
   return (
     <div>
@@ -49,6 +52,9 @@ export const App = () => {
       <Values name="good" value={good}/>
       <Values name="neutral" value={neutral}/>
       <Values name="bad" value={bad}/>
+      <Values name="all" value={total}/>
+      <Values name="average" value={average}/>
+      <Values name="positive" value={positive}/>
     </div>
   )
 }
