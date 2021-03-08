@@ -29,6 +29,7 @@ const Feedback = (props) => {
   return(
     <div>
       <table>
+        <tbody>
         <tr>
           <td> <Statistics text="good" /> </td>
           <td> <Statistics value={props.vl[0]} /> </td>
@@ -53,6 +54,7 @@ const Feedback = (props) => {
           <td> <Statistics text="positive" /> </td>
           <td> <Statistics value={props.vl[5]} /> </td>
         </tr>
+        </tbody>
       </table>
     </div>
   )
