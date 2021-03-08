@@ -7,13 +7,7 @@ import { useState } from 'react';
 export const commitSHA = '1ca2c5f';
 // ------------------------------------------------------------ //
 
-const Display = (props) => {
-  return (
-    <div>
-      <h1>{props.name}</h1>
-    </div>
-  )
-}
+const Display = (props) => <div><h1>{props.name}</h1></div>
 
 const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>
@@ -21,10 +15,25 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
-const Values = (props) => {
-  return (
+const Statistics = (props) => <div><p>{props.text} {props.value}</p></div>
+
+const Feedback = (props) => {
+  if (props.allClicks.length === 0) {
+    return(
+      <div>
+        No feedback given
+      </div>
+    )
+  }
+
+  return(
     <div>
-      <p>{props.name} {props.value}</p>
+      <Statistics text="good" value={props.vl[0]}/>
+      <Statistics text="neutral" value={props.vl[1]}/>
+      <Statistics text="bad" value={props.vl[2]}/>
+      <Statistics text="all" value={props.vl[3]}/>
+      <Statistics text="average" value={props.vl[4]}/>
+      <Statistics text="positive" value={props.vl[5]}/>
     </div>
   )
 }
@@ -34,13 +43,26 @@ export const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [allClicks, setAll] = useState([])
 
-  const goodClickHandler = () => setGood(good + 1)
-  const neutralClickHandler = () => setNeutral(neutral + 1)
-  const badClickHandler = () => setBad(bad + 1)
-  const total = good + neutral + bad
-  const positive = good / total
-  const average = (good - bad) / total
+  const goodClickHandler = () => {
+    setAll(allClicks.concat('G'))
+    setGood(good + 1)
+  }
+  const neutralClickHandler = () => {
+    setAll(allClicks.concat('N'))
+    setNeutral(neutral + 1)
+  }
+  const badClickHandler = () => {
+    setAll(allClicks.concat('B'))
+    setBad(bad + 1)
+  }
+
+  let total = good + neutral + bad
+  let positive = good / total
+  let average = (good - bad) / total
+
+  const vl = [good, neutral, bad, total, average, positive]
 
   return (
     <div>
@@ -49,12 +71,8 @@ export const App = () => {
       <Button handleClick={neutralClickHandler} text="neutral" />
       <Button handleClick={badClickHandler} text="bad" />
       <Display name="statistics"/>
-      <Values name="good" value={good}/>
-      <Values name="neutral" value={neutral}/>
-      <Values name="bad" value={bad}/>
-      <Values name="all" value={total}/>
-      <Values name="average" value={average}/>
-      <Values name="positive" value={positive}/>
+      <Feedback allClicks={allClicks} vl={vl}/>
+      
     </div>
   )
 }
