@@ -28,12 +28,32 @@ const Feedback = (props) => {
 
   return(
     <div>
-      <Statistics text="good" value={props.vl[0]}/>
-      <Statistics text="neutral" value={props.vl[1]}/>
-      <Statistics text="bad" value={props.vl[2]}/>
-      <Statistics text="all" value={props.vl[3]}/>
-      <Statistics text="average" value={props.vl[4]}/>
-      <Statistics text="positive" value={props.vl[5]}/>
+      <table>
+        <tr>
+          <td> <Statistics text="good" /> </td>
+          <td> <Statistics value={props.vl[0]} /> </td>
+        </tr>
+        <tr>
+          <td> <Statistics text="neutral" /> </td>
+          <td> <Statistics value={props.vl[1]} /> </td>
+        </tr>
+        <tr>
+          <td> <Statistics text="bad" /> </td>
+          <td> <Statistics value={props.vl[2]} /> </td>
+        </tr>
+        <tr>
+          <td> <Statistics text="all" /> </td>
+          <td> <Statistics value={props.vl[3]} /> </td>
+        </tr>
+        <tr>
+          <td> <Statistics text="average" /> </td>
+          <td> <Statistics value={props.vl[4]} /> </td>
+        </tr>
+        <tr>
+          <td> <Statistics text="positive" /> </td>
+          <td> <Statistics value={props.vl[5]} /> </td>
+        </tr>
+      </table>
     </div>
   )
 }
@@ -71,8 +91,7 @@ export const App = () => {
       <Button handleClick={neutralClickHandler} text="neutral" />
       <Button handleClick={badClickHandler} text="bad" />
       <Display name="statistics"/>
-      <Feedback allClicks={allClicks} vl={vl}/>
-      
+      <Feedback allClicks={allClicks} vl={vl} />     
     </div>
   )
 }
