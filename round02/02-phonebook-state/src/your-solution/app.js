@@ -1,45 +1,43 @@
 import { useState } from 'react'
+import { Persons, Filter, Form } from './components'
+
 // ------------------------------------------------------------ //
 // ENTER COMMIT SHA OF YOUR REPO IN HERE                        //
 // ------------------------------------------------------------ //
 export const commitSHA = '1ca2c5f';
 // ------------------------------------------------------------ //
 
-const Persons = ({ persons }) => {
-  return (
-    <p>{persons.name} {persons.number}</p>
-  )
-}
-
-const PersonsInfo = ({ persons }) => {
-  const personsList = persons.map((persons => 
-    <Persons key={persons.name} persons={persons} /> ));
-
-  return <div>{personsList}</div>  
-}
 
 export const App = () => {
   const [ persons, setPersons ] = useState([{ name: 'Arto Hellas', number: '040-123456' }]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
-  const [ search, setSearch ] = useState('')
+  const [ newSearch, setNewSearch ] = useState('')
 
   const addName = (event) => {
     event.preventDefault()
-    const nameObject = {
-      name: newName,
-      number: newNumber,
-    }
-    
-    if (persons.find(({ name }) => name === undefined)){
-      setPersons(persons.concat(nameObject))
+    let obj = persons.find( personObj => personObj.name === newName);
+    if(obj != null && obj.number == newNumber){
+      window.alert(`${newName} is already added to phonebook`);
+      return
+    }else if(obj != null && obj.number != newNumber){
+      persons.map(person => person.number == obj.number ? person.number = newNumber : person.number);
+      setPersons(persons)
       setNewName('')
       setNewNumber('')
+      return
     }
-    else{
-      window.alert(`${newName} is already added to phonebook`)
-    } 
- 
+    const namebject = {
+      name: newName,
+      number: newNumber,
+      date: new Date().toISOString(),
+      important: Math.random() < 0.5,
+      id: persons.length + 1,
+    }
+  
+    setPersons(persons.concat(namebject))
+    setNewName('')
+    setNewNumber('')
   }
 
   const handleNameChange = (event) => {
@@ -54,35 +52,19 @@ export const App = () => {
 
   const handleSearch = (event) => {
     console.log(event.target.value)
-    setSearch(event.target.value)
-  }
-
-  const dynamicSearch = () => {
-    return persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
+    setNewSearch(event.target.value)
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter shown with 
-        <input value={search} onChange={handleSearch} />
-      </div>
+      <Filter search={handleSearch} />
       <h2>add a new</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Form addName={addName} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber}
+      handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-        <PersonsInfo persons={dynamicSearch()}/>
-       
-        
+      <Persons persons={persons} newSearch={newSearch} setPersons={setPersons}/>
+          
     </div>
   )
 }
