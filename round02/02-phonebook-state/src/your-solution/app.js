@@ -7,26 +7,25 @@ export const commitSHA = '1ca2c5f';
 
 const Persons = ({ persons }) => {
   return (
-    <p>{persons.name}</p>
+    <p>{persons.name} {persons.number}</p>
   )
 }
 
 export const App = () => {
-  const [ persons, setPersons ] = useState([{ name: 'Arto Hellas' }]) 
-  const [ newName, setNewName ] = useState('Ada Lovelace')
+  const [ persons, setPersons ] = useState([{ name: 'Arto Hellas', number: '040-123456' }]) 
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
+  
 
   const addName = (event) => {
     event.preventDefault()
     const nameObject = {
       name: newName,
+      number: newNumber,
     }
-    if (persons.includes(nameObject.name) === false){
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-    }
-    else{
-      window.alert(`${newName} is already added to phonebook`)
-    }   
+    setPersons(persons.concat(nameObject))
+    setNewName('') 
+    setNewNumber('')  
   }
 
   const handleNameChange = (event) => {
@@ -34,14 +33,29 @@ export const App = () => {
     setNewName(event.target.value)
   }
 
+  const handleNumberChange = (event) => {
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>filter shown with 
+        <input />
+      </div>
+      <h2>add a new</h2>
       <form onSubmit={addName}>
         <div>
           name: <input 
             value={newName}
             onChange={handleNameChange}
+                />
+        </div>
+        <div>
+          number: <input 
+            value={newNumber}
+            onChange={handleNumberChange}
                 />
         </div>
         <div>
