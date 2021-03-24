@@ -30,9 +30,16 @@ export const App = () => {
       name: newName,
       number: newNumber,
     }
-    setPersons(persons.concat(nameObject))
-    setNewName('') 
-    setNewNumber('')  
+    
+    if (persons.find(({ name }) => name === undefined)){
+      setPersons(persons.concat(nameObject))
+      setNewName('')
+      setNewNumber('')
+    }
+    else{
+      window.alert(`${newName} is already added to phonebook`)
+    } 
+ 
   }
 
   const handleNameChange = (event) => {
