@@ -17,9 +17,6 @@ export const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -58,27 +55,11 @@ export const App = () => {
     }
   }
 
-  const addBlog = (event) => {
-    event.preventDefault()
-
-    const blogObject = {
-      title: title,
-      author: author,
-    }
-
+  const addBlog = (blogObject) => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-
-        setSuccessMessage(
-          `a new blog '${blogObject.title}' by '${blogObject.author}' added`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
-
-        setTitle('')
-        setAuthor('')
       })
   }
 
@@ -110,8 +91,7 @@ export const App = () => {
       </button>
       <h2>create new</h2>
       <Togglable buttonLabel="new blog">
-        <BlogForm title={title} setTitle={setTitle}
-          author={author} setAuthor={setAuthor} addBlog={addBlog} />
+        <BlogForm createBlog={addBlog} />
       </Togglable>
 
       {blogs.map(blog =>

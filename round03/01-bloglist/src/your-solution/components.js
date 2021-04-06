@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import blogService from './services'
 
 export const Togglable = (props) => {
   const [visible, setVisible] = useState(false)
@@ -54,9 +55,47 @@ export const LoginForm = ({ username, setUserName, password, setPassword, handle
   </form>
 
 
-export const BlogForm = ({ title, setTitle, author, setAuthor, addBlog }) =>
-  <form>
-    <InputField text={'title: '} value={title} setValue={setTitle} />
-    <InputField text={'author: '} value={author} setValue={setAuthor} />
-    <button type="submit" onClick={addBlog}>add</button>
-  </form>
+export const BlogForm = ({ createBlog }) => {
+  const [blogs, setBlogs] = useState([])
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
+
+  const addBlog = (event) => {
+    event.preventDefault()
+
+    const blogObject = {
+      title: title,
+      author: author,
+    }
+
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+
+        setSuccessMessage(
+          `a new blog '${blogObject.title}' by '${blogObject.author}' added`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
+
+        setTitle('')
+        setAuthor('')
+      })
+  }
+
+  return (
+    <div>
+      <form onSubmit={addBlog}>
+        <input text='title'
+          value={title}
+          onChange={(event) => setTitle(event.target.value)} />
+        <input text='author'
+          value={author}
+          onChange={(event) => setAuthor(event.target.value)} />
+        <button type="submit">save</button>
+      </form>
+    </div>
+  )
+}
