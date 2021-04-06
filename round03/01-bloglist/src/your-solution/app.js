@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Blog, Notification, LoginForm, BlogForm } from './components'
+import { Blog, Notification, LoginForm, BlogForm, Togglable } from './components'
 import blogService from './services'
 
 // ------------------------------------------------------------ //
@@ -13,11 +13,11 @@ export const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const [title, setTitle] = useState('') 
+  const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const App = () => {
       blogService.setToken(user.token)
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       setUser(user)
       setUsername('')
       setPassword('')
@@ -68,13 +68,13 @@ export const App = () => {
 
     blogService
       .create(blogObject)
-        .then(returnedBlog => {
+      .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
 
         setSuccessMessage(
           `a new blog '${blogObject.title}' by '${blogObject.author}' added`)
         setTimeout(() => {
-        setSuccessMessage(null)
+          setSuccessMessage(null)
         }, 5000)
 
         setTitle('')
@@ -85,10 +85,13 @@ export const App = () => {
   if (user === null) {
     return (
       <div>
-         <Notification message={errorMessage} />
+        <Notification message={errorMessage} />
         <h2>Log in to application</h2>
-        <LoginForm username={username} setUserName={setUsername}
-        password={password} setPassword={setPassword} handleLogin={handleLogin} />
+        <Togglable buttonLabel="log in">
+          <LoginForm username={username} setUserName={setUsername}
+            password={password} setPassword={setPassword} handleLogin={handleLogin} />
+        </Togglable>
+
       </div>
     )
   }
@@ -98,7 +101,7 @@ export const App = () => {
       <h2>blogs</h2>
       <Notification message={successMessage} />
       <p>{user.name} logged in</p>
-      <button onClick={ ()=> {
+      <button onClick={() => {
         window.localStorage.removeItem('loggedBlogappUser')
         setUser(null)
       }
@@ -106,13 +109,14 @@ export const App = () => {
         logout
       </button>
       <h2>create new</h2>
-      <BlogForm title={title} setTitle={setTitle}
-      author={author} setAuthor={setAuthor} addBlog={addBlog} />
-      
+      <Togglable buttonLabel="new blog">
+        <BlogForm title={title} setTitle={setTitle}
+          author={author} setAuthor={setAuthor} addBlog={addBlog} />
+      </Togglable>
+
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
   )
 }
-  
