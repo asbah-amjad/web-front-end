@@ -1,34 +1,38 @@
 import React, { useState } from 'react'
 import blogService from './services'
 
-export const Togglable = (props) => {
-  const [visible, setVisible] = useState(false)
+export const Blog = ({ blog }) => {
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
+  const [blogVisible, setBlogVisible] = useState(false)
 
-  const toggleVisibility = () => {
-    setVisible(!visible)
+  const hideWhenVisible = { display: blogVisible ? 'none' : '' }
+  const showWhenVisible = { display: blogVisible ? '' : 'none' }
+
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
   }
 
   return (
-    <div>
+    <div style={blogStyle}>
+      <div>
+        {blog.title} {blog.author}
+      </div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <button onClick={() => setBlogVisible(true)}>view</button>
       </div>
       <div style={showWhenVisible}>
-        {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <p>{blog.url}</p>
+        <p>{blog.likes}</p>
+        <p>{blog.userId}</p>
+        <button onClick={() => setBlogVisible(false)}>hide</button>
       </div>
     </div>
   )
 }
-
-export const Blog = ({ blog }) => (
-  <div>
-    {blog.title} {blog.author}
-  </div>
-)
 
 export const Notification = ({ message }) => {
   if (message === null) {
@@ -96,6 +100,29 @@ export const BlogForm = ({ createBlog }) => {
           onChange={(event) => setAuthor(event.target.value)} />
         <button type="submit">save</button>
       </form>
+    </div>
+  )
+}
+
+export const Togglable = (props) => {
+  const [visible, setVisible] = useState(false)
+
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
+
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
+
+  return (
+    <div>
+      <div style={hideWhenVisible}>
+        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+      </div>
+      <div style={showWhenVisible}>
+        {props.children}
+        <button onClick={toggleVisibility}>cancel</button>
+      </div>
     </div>
   )
 }
