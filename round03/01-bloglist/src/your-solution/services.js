@@ -9,7 +9,7 @@ const setToken = newToken => {
 const getAll = () => {
   const baseUrl = '/api/blogs'
   const request = axios.get(baseUrl)
-  return request.then(response =>  response.data)
+  return request.then(response => response.data)
 }
 
 const create = async newObject => {
@@ -22,10 +22,16 @@ const create = async newObject => {
   return response.data
 }
 
+const update = (id, newObject) => {
+  const baseUrl = '/api/blogs'
+  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  return request.then(response => response.data)
+}
+
 const login = async credentials => {
   const baseUrl = '/api/login'
   const response = await axios.post(baseUrl, credentials)
   return response.data
 }
 
-export default { getAll, login, create, setToken }
+export default { getAll, login, create, setToken, update }
