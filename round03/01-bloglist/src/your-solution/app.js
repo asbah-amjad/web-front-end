@@ -5,7 +5,7 @@ import blogService from './services'
 // ------------------------------------------------------------ //
 // ENTER COMMIT SHA OF YOUR REPO IN HERE                        //
 // ------------------------------------------------------------ //
-export const commitSHA = '-commit-sha-in-here-';
+export const commitSHA = '-commit-sha-in-here-'
 // ------------------------------------------------------------ //
 
 
@@ -60,6 +60,13 @@ export const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+
+        setSuccessMessage(
+          `a new blog '${blogObject.title}' by '${blogObject.author}' added`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
+
       })
   }
 

@@ -82,41 +82,31 @@ LoginForm.propTypes = {
 }
 
 export const BlogForm = ({ createBlog }) => {
-  const [blogs, setBlogs] = useState([])
+
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
-  const [successMessage, setSuccessMessage] = useState(null)
+
 
   const addBlog = (event) => {
     event.preventDefault()
 
-    const blogObject = {
+    createBlog({
       title: title,
       author: author,
-    }
+    })
 
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-
-        setSuccessMessage(
-          `a new blog '${blogObject.title}' by '${blogObject.author}' added`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
-
-        setTitle('')
-        setAuthor('')
-      })
+    setTitle('')
+    setAuthor('')
   }
 
   return (
     <div>
       <form onSubmit={addBlog}>
+        <label>Title:</label>
         <input text='title'
           value={title}
           onChange={(event) => setTitle(event.target.value)} />
+        <label>Author:</label>
         <input text='author'
           value={author}
           onChange={(event) => setAuthor(event.target.value)} />
