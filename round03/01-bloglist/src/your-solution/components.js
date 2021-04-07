@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import blogService from './services'
+import PropTypes from 'prop-types'
 
 export const Blog = ({ blog }) => {
   const [blogs, setBlogs] = useState([])
@@ -72,6 +73,13 @@ export const LoginForm = ({ username, setUserName, password, setPassword, handle
     <button type="submit" onClick={handleLogin}>login</button>
   </form>
 
+LoginForm.propTypes = {
+  username: PropTypes.string.isRequired,
+  setUserName: PropTypes.func.isRequired,
+  password: PropTypes.string.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired
+}
 
 export const BlogForm = ({ createBlog }) => {
   const [blogs, setBlogs] = useState([])
