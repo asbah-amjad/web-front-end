@@ -2,7 +2,7 @@ import React from 'react'
 import { createStore } from 'redux'
 import { useSelector, useDispatch } from 'react-redux'
 import reducer from './anecdoteReducer'
-import { votesOf } from './anecdoteReducer'
+import { votesOf, createNew } from './anecdoteReducer'
 
 export const store = createStore(reducer)
 
@@ -16,6 +16,13 @@ export const App = () => {
   const vote = (id, votes) => {
     console.log('vote', id)
     dispatch(votesOf(id, votes))
+  }
+
+  const addVote = (event) => {
+    event.preventDefault()
+    const content = event.target.vote.value
+    event.target.vote.value = ''
+    dispatch(createNew(content))
   }
 
   return (
@@ -33,9 +40,9 @@ export const App = () => {
         </div>
       )}
       <h2>create new</h2>
-      <form>
-        <div><input /></div>
-        <button>create</button>
+      <form onSubmit={addVote}>
+        <input name="vote" />
+        <button type="submit">create</button>
       </form>
     </div>
   )

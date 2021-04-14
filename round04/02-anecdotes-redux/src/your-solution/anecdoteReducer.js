@@ -34,10 +34,11 @@ const reducer = (state = initialState, action) => {
             votes: action.data.votes + 1  // replace the vote
           }
         }
-
         // Leave every other item unchanged
         return item;
       });
+    case 'CREATE_NEW':
+      return [...state, action.data]
     default:
       return state
   }
@@ -49,6 +50,17 @@ export const votesOf = (id, votes) => {
     data: {
       id,
       votes,
+    }
+  }
+}
+
+export const createNew = (content) => {
+  return {
+    type: 'CREATE_NEW',
+    data: {
+      content,
+      id: getId(),
+      votes: 0
     }
   }
 }
