@@ -1,9 +1,6 @@
 import React from 'react'
-import { createStore } from 'redux'
-import reducer from './anecdoteReducer'
 import { AnecdoteForm, AnecdoteList } from './components'
 
-export const store = createStore(reducer)
 
 // ** enter commit sha of your repository in here **
 export const commitSHA = '-commit-sha-in-here-';
@@ -18,3 +15,5 @@ export const App = () => {
     </div>
   )
 }
+
+export { default as store } from './store'
