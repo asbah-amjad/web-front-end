@@ -2,6 +2,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { votesOf, createNew } from './anecdoteReducer'
+import { notifyChange } from './notificationReducer'
 
 export const AnecdoteForm = () => {
   const dispatch = useDispatch()
@@ -26,7 +27,7 @@ export const AnecdoteForm = () => {
 
 export const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector(state => state.anecdotes)
 
   const vote = (id, votes) => {
     console.log('vote', id)
@@ -47,6 +48,7 @@ export const AnecdoteList = () => {
             <div>
               has {anecdote.votes}
               <button onClick={() => vote(anecdote.id, anecdote.votes)}>vote</button>
+
             </div>
           </div>
         )}
@@ -54,7 +56,10 @@ export const AnecdoteList = () => {
   )
 }
 
+
 export const Notification = () => {
+
+  const notification = useSelector(state => state.notify)
   const style = {
     border: 'solid',
     padding: 10,
@@ -62,7 +67,7 @@ export const Notification = () => {
   }
   return (
     <div style={style}>
-      render here notification...
+      {notification}
     </div>
   )
 }
