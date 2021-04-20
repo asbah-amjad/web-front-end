@@ -10,9 +10,9 @@ export const commitSHA = '-commit-sha-in-here-';
 export const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
-    anecdoteService
-      .getAll().then(notes => dispatch(initializeAnecdotes(notes)))
+    dispatch(initializeAnecdotes())
   }, [dispatch])
+
 
   return (
     <div>

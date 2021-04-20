@@ -13,8 +13,7 @@ export const AnecdoteForm = () => {
     event.preventDefault()
     const content = event.target.vote.value
     event.target.vote.value = ''
-    const newAnecdote = await anecdoteService.createNew(content)
-    dispatch(createNew(newAnecdote))
+    dispatch(createNew(content))
   }
 
   return (
