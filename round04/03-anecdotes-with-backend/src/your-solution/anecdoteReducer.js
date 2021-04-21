@@ -27,18 +27,7 @@ const anecdoteReducer = (state = [], action) => {
 
   switch (action.type) {
     case 'VOTE':
-      return state.map((item, index) => {
-        // Find the item with the matching id
-        if (item.id === action.data.id) {
-          // Return a new object
-          return {
-            ...item,  // copy the existing item
-            votes: action.data.votes + 1  // replace the vote
-          }
-        }
-        // Leave every other item unchanged
-        return item;
-      });
+      return state.map(a => a.id === action?.data?.id ? action?.data : a)
     case 'CREATE_NEW':
       return [...state, action.data]
     case 'INIT_ANECDOTES':
@@ -48,13 +37,13 @@ const anecdoteReducer = (state = [], action) => {
   }
 }
 
-export const votesOf = (id, votes) => {
-  return {
-    type: 'VOTE',
-    data: {
-      id,
-      votes,
-    }
+export const votesOf = (anecdote) => {
+  return async dispatch => {
+    const updatedAnecdote = await anecdoteService.updateVote(anecdote)
+    dispatch({
+      type: 'VOTE',
+      data: updatedAnecdote
+    })
   }
 }
 
