@@ -29,12 +29,11 @@ export const AnecdoteForm = () => {
 export const AnecdoteList = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector(state => state.anecdotes)
+  const filter = useSelector(state => state.filter).toLowerCase()
 
   const vote = (id, votes) => {
     console.log('vote', id)
     dispatch(votesOf(id, votes))
-
-    /*setTimeout(() => dispatch(notifyChange(`you voted for ${id}`)), 5000)*/
   }
 
   const notification = (content) => {
@@ -49,7 +48,7 @@ export const AnecdoteList = () => {
       {[...anecdotes]
         .sort((a, b) =>
           (b.votes >= 0 ? b.votes : 0) - (a.votes >= 0 ? a.votes : 0)
-        )
+        ).filter(a => a.content.toLowerCase().includes(filter))
         .map(anecdote =>
           <div key={anecdote.id}>
             <div>
@@ -86,22 +85,20 @@ export const Notification = () => {
 }
 
 export const Filter = () => {
-
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state.anecdotes)
 
-  const handleChange = (event) => {
-    // input-field value is in variable event.target.value
-    event.preventDefault()
-    const find = event.target.value
+  const handleFilterChange = (event) => {
+
+    dispatch(filterChange(event.target.value))
   }
+
   const style = {
     marginBottom: 10
   }
 
   return (
     <div style={style}>
-      filter <input onChange={handleChange} />
+      filter <input onChange={handleFilterChange} />
     </div>
   )
 }
