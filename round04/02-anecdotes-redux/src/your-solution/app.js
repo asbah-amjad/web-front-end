@@ -1,8 +1,8 @@
 import React from 'react'
-import { AnecdoteForm, AnecdoteList, Notification } from './components'
+import { AnecdoteForm, AnecdoteList, Notification, Filter } from './components'
 
 // ** enter commit sha of your repository in here **
-export const commitSHA = '-commit-sha-in-here-';
+export const commitSHA = '1ca2c5f';
 
 export const App = () => {
 
@@ -12,6 +12,7 @@ export const App = () => {
       <Notification />
       <AnecdoteForm />
       <AnecdoteList />
+      <Filter />
     </div>
   )
 }

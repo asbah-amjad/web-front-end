@@ -2,7 +2,8 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { votesOf, createNew } from './anecdoteReducer'
-import { notifyChange } from './notificationReducer'
+import { notifyChange, notifyClear } from './notificationReducer'
+import { filterChange } from './filterReducer'
 
 export const AnecdoteForm = () => {
   const dispatch = useDispatch()
@@ -32,6 +33,15 @@ export const AnecdoteList = () => {
   const vote = (id, votes) => {
     console.log('vote', id)
     dispatch(votesOf(id, votes))
+
+    /*setTimeout(() => dispatch(notifyChange(`you voted for ${id}`)), 5000)*/
+  }
+
+  const notification = (content) => {
+    dispatch(notifyChange(`you voted '${content}'`))
+    setTimeout(() => {
+      dispatch(notifyClear())
+    }, 5000)
   }
 
   return (
@@ -47,8 +57,11 @@ export const AnecdoteList = () => {
             </div>
             <div>
               has {anecdote.votes}
-              <button onClick={() => vote(anecdote.id, anecdote.votes)}>vote</button>
-
+              <button onClick={() => {
+                vote(anecdote.id, anecdote.votes)
+                notification(anecdote.content)
+              }
+              }>vote</button>
             </div>
           </div>
         )}
@@ -72,6 +85,26 @@ export const Notification = () => {
   )
 }
 
+export const Filter = () => {
+
+  const dispatch = useDispatch()
+  const anecdotes = useSelector(state => state.anecdotes)
+
+  const handleChange = (event) => {
+    // input-field value is in variable event.target.value
+    event.preventDefault()
+    const find = event.target.value
+  }
+  const style = {
+    marginBottom: 10
+  }
+
+  return (
+    <div style={style}>
+      filter <input onChange={handleChange} />
+    </div>
+  )
+}
 
 
 
