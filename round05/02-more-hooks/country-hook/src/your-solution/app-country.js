@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 // ** enter commit sha of your repository in here **
-export const commitSHA = '-commit-sha-in-here-';
+export const commitSHA = '1ca2c5f';
 
 
 const useField = (type) => {
@@ -15,14 +15,26 @@ const useField = (type) => {
   return {
     type,
     value,
-    onChange
+    onChange,
   }
 }
 
 const useCountry = (name) => {
+  const url = `https://restcountries.eu/rest/v2/name/${name}?fullText=true`
   const [country, setCountry] = useState(null)
 
-  useEffect(() => {})
+  useEffect(() => {
+    if (name === null || name === '') {
+      return
+    } else {
+      axios
+        .get(url)
+        .then((response) => {
+          setCountry(response)
+        })
+        .catch((error) => setCountry('null'))
+    }
+  }, [url, name])
 
   return country
 }
@@ -32,20 +44,20 @@ const Country = ({ country }) => {
     return null
   }
 
-  if (!country.found) {
-    return (
-      <div>
-        not found...
-      </div>
-    )
+  if (!country.data) {
+    return <div>not found...</div>
   }
 
   return (
     <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div> 
-      <img src={country.data.flag} height='100' alt={`flag of ${country.data.name}`}/>  
+      <h3>{country.data[0].name} </h3>
+      <div>capital {country.data[0].capital} </div>
+      <div>population {country.data[0].population}</div>
+      <img
+        src={country.data[0].flag}
+        height='100'
+        alt={`flag of ${country.data[0].name}`}
+      />
     </div>
   )
 }
