@@ -22,7 +22,10 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: () => books,
+    allBooks: (root, args) => {
+      const book = books.filter(p => p.author === args.author)
+      return book;
+    },
     allAuthors: () => authors,
   },
 
