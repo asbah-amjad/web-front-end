@@ -14,8 +14,12 @@ export const App = () => {
   const [page, setPage] = useState('authors')
 
   const result = useQuery(ALL_AUTHORS)
+  const book_result = useQuery(ALL_BOOKS)
 
   if (result.loading) {
+    return <div>loading...</div>
+  }
+  if (book_result.loading) {
     return <div>loading...</div>
   }
 
@@ -32,7 +36,7 @@ export const App = () => {
       />
 
       <Books
-        show={page === 'books'}
+        show={page === 'books'} books={book_result.data.allBooks}
       />
 
       <NewBook
