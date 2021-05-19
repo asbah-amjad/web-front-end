@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client';
+import Select from 'react-select';
 import { EDIT_AUTHOR, ALL_AUTHORS } from './gql'
 
+const POLL_INTERVAL = 3000
+
 const Authors = (props) => {
+  const result = useQuery(ALL_AUTHORS, { pollInterval: POLL_INTERVAL })
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
+  const [selectedAuthor, setSelectAuthor] = useState('')
 
-  const [editAuthor] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [{ query: ALL_AUTHORS }]
-  })
+  const [editAuthor] = useMutation(EDIT_AUTHOR)
 
   const submit = async (event) => {
     event.preventDefault()
@@ -17,14 +20,29 @@ const Authors = (props) => {
       variables: { name, born: Number(born) }
     })
 
-    setName('')
-    setBorn('')
+    setTimeout(() => {
+      if (result.loading) {
+        authors = result.data.allAuthors
+      }
+    }, 500)
   }
 
   if (!props.show) {
     return null
   }
-  const authors = []
+
+  if (result.loading) {
+    return <div>loading...</div>
+  }
+  let authors = result.data.allAuthors
+  const authorsNames = authors.map(author => {
+    return { value: author.name, label: author.name }
+  })
+
+  const authorChanged = (value) => {
+    setSelectAuthor(value)
+    setName(value.value)
+  }
 
 
   return (
@@ -54,10 +72,15 @@ const Authors = (props) => {
       <h2>Set birthyear</h2>
       <form onSubmit={submit}>
         <div>
-          name <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
+          name
+            <Select
+            name='author-name'
+            value={selectedAuthor}
+            options={authorsNames}
+            onChange={authorChanged}
+          >
+          </Select>
+
         </div>
         <div>
           born <input
