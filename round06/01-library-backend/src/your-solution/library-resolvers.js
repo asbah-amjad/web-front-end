@@ -7,7 +7,7 @@ let { authors, books } = require(`${dataPath}/library-data`)
 // ==
 
 // == ENTER COMMIT SHA OF YOUR REPO IN HERE 
-const commitSHA = 'commit-sha-in-here';
+const commitSHA = '1ca2c5f';
 
 
 const resolvers = {
