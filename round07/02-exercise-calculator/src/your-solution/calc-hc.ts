@@ -1,6 +1,7 @@
 
 import { calculateExercises } from './exercise-calculator';
 
+console.log(calculateExercises(2, [3, 0, 2, 4.5, 0, 3, 1]));
 
 /*
 
