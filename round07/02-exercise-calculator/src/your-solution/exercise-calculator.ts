@@ -11,6 +11,9 @@ interface Result {
 
 const calculateExercises = (target: number, hours: number[]): Result => {
 
+    if (isNaN(target)) {
+        throw new Error('malformatted parameters');
+    }
     let totalHours: number = 0;
     let nonTrainingDays: number = 0;
     let success: boolean = false;
