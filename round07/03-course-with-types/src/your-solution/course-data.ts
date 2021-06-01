@@ -5,22 +5,30 @@ interface CoursePartBase {
   type: string;
 }
 
-interface CourseNormalPart extends CoursePartBase {
-  type: "normal";
+interface CourseCommonPart extends CoursePartBase {
   description: string;
 }
+
+interface CourseNormalPart extends CourseCommonPart {
+  type: "normal";
+}
+
+interface CourseSubmissionPart extends CourseCommonPart {
+  type: "submission";
+  exerciseSubmissionLink: string;
+}
+
 interface CourseProjectPart extends CoursePartBase {
   type: "groupProject";
   groupProjectCount: number;
 }
 
-interface CourseSubmissionPart extends CoursePartBase {
-  type: "submission";
-  description: string;
-  exerciseSubmissionLink: string;
+interface CourseSpecialPart extends CourseCommonPart {
+  type: "special";
+  requirements: string[];
 }
 
-export type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart;
+export type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart | CourseSpecialPart;
 
 
 // this is the new coursePart variable
@@ -49,5 +57,12 @@ export const courseParts: CoursePart[] = [
     description: "Confusing description",
     exerciseSubmissionLink: "https://fake-exercise-submit.made-up-url.dev",
     type: "submission"
+  },
+  {
+    name: "Backend development",
+    exerciseCount: 21,
+    description: "Typing the backend",
+    requirements: ["nodejs", "jest"],
+    type: "special"
   }
 ]
