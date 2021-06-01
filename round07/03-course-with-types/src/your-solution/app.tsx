@@ -1,10 +1,10 @@
 import React from 'react';
 
-//import { Header, Content, Total } from './components';
+import { Header, Content, Total } from './components';
 
 
 // ** enter commit sha of your repository in here **
-export const commitSHA = '-commit-sha-in-here-';
+export const commitSHA = '1ca2c5f';
 
 export const App = () => {
   const courseName = "Half Stack application development";
@@ -22,7 +22,7 @@ export const App = () => {
       exerciseCount: 14
     }
   ];
-
+/*
   return (
 
     <div>
@@ -42,14 +42,14 @@ export const App = () => {
       </p>
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <Header name={courseName} />
-  //     <Content ... />
-  //     <Total ... />
-  //   </div>
-  // )
+*/
+   return (
+     <div>
+       <Header name={courseName} />
+      <Content courseParts={courseParts} />  
+      <Total courseParts={courseParts}/>    
+    </div>
+   )
 
 };
 
