@@ -5,15 +5,15 @@ import { Button, Divider, Header, Container } from "semantic-ui-react";
 
 import { apiBaseUrl } from "./constants";
 import { useStateValue } from "./state";
-import { Patient } from "./types";
+import { Patient, DiagnoseEntry } from "./types";
 
 import PatientListPage from "./PatientListPage";
+import PatientDetails from "./PatientDetailsPage";
 
 export { reducer, StateProvider } from "./state";
 
 // ** enter commit sha of your repository in here **
-export const commitSHA = '-commit-sha-in-here-';
-
+export const commitSHA = "1ca2c5f";
 
 export const App = () => {
   const [, dispatch] = useStateValue();
@@ -31,6 +31,18 @@ export const App = () => {
       }
     };
     void fetchPatientList();
+
+    const fetchDiagnoseList = async () => {
+      try {
+        const { data: diagnoseListFromApi } = await axios.get<DiagnoseEntry[]>(
+          `${apiBaseUrl}/diagnoses`
+        );
+        dispatch({ type: "SET_DIAGNOSES_LIST", payload: diagnoseListFromApi });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    void fetchDiagnoseList();
   }, [dispatch]);
 
   return (
@@ -43,6 +55,9 @@ export const App = () => {
           </Button>
           <Divider hidden />
           <Switch>
+            <Route path="/patients/:id">
+              <PatientDetails />
+            </Route>
             <Route path="/">
               <PatientListPage />
             </Route>
@@ -52,4 +67,3 @@ export const App = () => {
     </div>
   );
 };
-
