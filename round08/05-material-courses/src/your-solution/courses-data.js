@@ -1,8 +1,11 @@
+import DeveloperModeIcon from '@material-ui/icons/DeveloperMode';
+import CodeIcon from '@material-ui/icons/Code';
 
 const courses = [
   {
     name: 'Half Stack application development',
     id: 1,
+    icon: <DeveloperModeIcon />,
     parts: [
       {
         name: 'Fundamentals of React',
@@ -29,6 +32,7 @@ const courses = [
   {
     name: 'Node.js',
     id: 2,
+    icon: <CodeIcon />,
     parts: [
       {
         name: 'Routing',
