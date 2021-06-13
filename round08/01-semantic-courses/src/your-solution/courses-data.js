@@ -2,6 +2,7 @@
 const courses = [
   {
     name: 'Half Stack application development',
+    icon: 'code',
     id: 1,
     parts: [
       {
@@ -28,6 +29,7 @@ const courses = [
   },
   {
     name: 'Node.js',
+    icon: 'file code',
     id: 2,
     parts: [
       {
