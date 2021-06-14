@@ -1,16 +1,30 @@
-
+import {
+  Input,
+  Segment,
+  Button,
+  Icon,
+  Header
+} from 'semantic-ui-react'
 
 export const Filter = ({ value, handleChange }) =>
-  <p>
-    find countries <input value={value} onChange={handleChange} />
-  </p>
+  <div>
+    <Input icon='search' placeholder='Search Countries' value={value} onChange={handleChange} />
+  </div>
 
 
-export const Countries = ({ countries, handleCountryClick }) => {
+export const Countries = ({ countries, handleCountryClick, filter }) => {
+
+  if (!filter || filter.length === 0 || filter.length === '') {
+    return (
+      <Segment secondary>
+        Enter search criteria
+      </Segment>
+    )
+  }
 
   if (countries.length > 10) {
     return (
-      <div>Too many matches, specify another filter</div>
+      <Segment secondary>Too many matches, specify another filter</Segment>
     )
   }
 
@@ -35,27 +49,28 @@ export const Countries = ({ countries, handleCountryClick }) => {
 }
 
 const CountryDetails = ({ country }) =>
-  <>
-    <h2>{country.name}</h2>
+  <Segment>
+    <Header as="h2"><img src={country.flag} alt={`${country.name} flag`} width="100" />{country.name}</Header>
 
-    <div>capital {country.capital}</div>
-    <div>population {country.population}</div>
+    <Header as="h3"><Icon name="map pin" />Capital</Header>
+    <Segment>{country.capital}</Segment>
 
-    <h3>languages</h3>
+    <Header as="h3"><Icon name="users" />Population</Header>
+    <Segment>{country.population}</Segment>
 
-    <ul>
+    <Header as="h3"><Icon name="language" />Languages</Header>
+    <Segment>
       {country.languages.map(language =>
-        <li key={language.iso639_1}>{language.name}</li>
+        <span key={language.iso639_1}>{language.name}, </span>
       )}
-    </ul>
+    </Segment>
 
-    <img src={country.flag} alt={`${country.name} flag`} width="100" />
-  </>
+
+  </Segment>
 
 
 const CountryName = ({ country, handleClick }) =>
   <div>
-    {country.name}
-    <button value={country.name} onClick={handleClick}>show</button>
+    <Button value={country.name} onClick={handleClick}>{country.name}</Button>
   </div>
 
