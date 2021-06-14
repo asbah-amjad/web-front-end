@@ -1,30 +1,39 @@
 
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
 import { addAnecdote, voteAnecdote } from '../redux/reducer-anecdote'
 import { setNotification, clearNotification } from '../redux/reducer-notification'
 import { setFilter } from '../redux/reducer-filter'
-
+import {
+  Button,
+  Segment,
+  Input,
+  Header,
+  Modal,
+  Icon,
+  TextArea,
+  Form,
+  Message
+} from 'semantic-ui-react'
 //
 // Notification
 //
 
 export const Notification = () => {
   const notification = useSelector(state => state.notification)
-  const style = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 1,
-    marginBottom: 10,
-    display: notification.length ? 'block' : 'none'
+  if (!notification || !notification.userAction) {
+    return (
+      <></>
+    )
   }
-  return (
-    <div style={style}>
-      {/* render here notification... */}
-      {notification}
-    </div>
-  )
+  else {
+    return (
+      <Message
+        header={notification.userAction}
+        content={'"' + notification.anecdote + '"'}>
+      </Message>
+    )
+  }
 }
 
 //
@@ -34,25 +43,37 @@ export const Notification = () => {
 export const AnecdoteForm = () => {
 
   const dispatch = useDispatch()
-
+  const [open, setOpen] = React.useState(false)
   const handleSubmit = (e) => {
     e.preventDefault()
     dispatch(addAnecdote(e.target.content.value))
     e.target.content.value = ''
   }
 
-  const style = {
-    marginTop: 5,
-    marginBottom: 5,
-  }
-
   return (
-    <div style={style}>
-      <form onSubmit={handleSubmit}>
-        <input name='content' />
-        <button>create</button>
-      </form>
-    </div>
+    <Modal
+      closeIcon
+      trigger={<Button basic color='green'>New</Button>}
+      open={open}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      size='small'
+    >
+      <Header icon='add' content='New Anecdote' />
+      <Form onSubmit={handleSubmit}>
+        <Modal.Content>
+          <TextArea placeholder='Enter anecdote content here...' name='content' style={{ width: '90%' }}></TextArea>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button basic color='red' onClick={() => setOpen(false)}>
+            <Icon name='remove' /> Cancel
+          </Button>
+          <Button basic color='green' type='submit'>
+            <Icon name='checkmark' /> Create
+          </Button>
+        </Modal.Actions>
+      </Form>
+    </Modal>
   )
 
 }
@@ -81,17 +102,19 @@ export const AnecdoteList = () => {
   }
 
   return (
-    <div style={{ marginTop: 5 }}>
+    <div>
       {anecdotes.map(anecdote =>
-        <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
-          </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={handleVoteClick(anecdote.id, anecdote.content)}>vote</button>
-          </div>
-        </div>
+        <Segment.Group key={anecdote.content}>
+          <Segment>
+            <Header as="h3">{anecdote.content}</Header>
+          </Segment>
+          <Segment>
+            <Header as="h4" color="grey">{anecdote.votes} votes </Header>
+          </Segment>
+          <Segment>
+            <Button color="green" onClick={handleVoteClick(anecdote.id, anecdote.content)}>Vote</Button>
+          </Segment>
+        </Segment.Group>
       )}
     </div>
   )
@@ -108,13 +131,8 @@ export const Filter = () => {
   const handleChange = (event) => {
     dispatch(setFilter(event.target.value))
   }
-  const style = {
-    marginBottom: 10
-  }
 
   return (
-    <div style={style}>
-      filter <input onChange={handleChange} />
-    </div>
+    <Input icon="search" placeholder="Search" onChange={handleChange} />
   )
 }
